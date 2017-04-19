@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="../web/alaska.css" rel="stylesheet" />
+    <title>Aller simple pour l'Alaska - Home</title>
+</head>
+<body>
+    <header>
+        <h1>Aller simple pour l'Alaska</h1>
+    </header>
+    {% for article in articles %}
+    <article>
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.content }}</p>
+    </article>
+    {% endfor %}
+<footer class="footer">
+</footer>
+</body>
+</html>
