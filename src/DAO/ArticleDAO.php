@@ -9,17 +9,10 @@
 
 namespace Alaska\DAO;
 
-use Doctrine\DBAL\Connection;
 use Alaska\Entity\Article;
 
-class ArticleDAO
+class ArticleDAO extends DAO
 {
-    private $db;
-
-    public function __construct(Connection $db)
-    {
-        $this->db = $db;
-    }
 
     // findAll() renvoie un array d'objets Alaska/Entity/Article
     /**
@@ -29,7 +22,7 @@ class ArticleDAO
      */
     public function findAll() {
         $sql = "select * from t_article order by art_id desc";
-        $fetch_result = $this->db->fetchAll($sql);
+        $fetch_result = $this->getDb()->fetchAll($sql);
 
         // Converti $fetch_result en tableau d'objets Alaska/Entity/Article
         $articles = array();
@@ -38,6 +31,17 @@ class ArticleDAO
             $articles[$articleId] = $this->buildEntityObject($row);
         }
         return $articles;
+    }
+
+
+    public function find($id) {
+        $sql = "select * from t_article where art_id=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
+
+        if ($row)
+            return $this->buildEntityObject($row);
+        else
+            throw new \Exception("No article matching id " . $id);
     }
 
 
