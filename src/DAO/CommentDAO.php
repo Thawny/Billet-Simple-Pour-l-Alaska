@@ -27,9 +27,11 @@ class CommentDAO extends DAO
         $article = $this->articleDAO->find($articleId);
 
         // renvoie tous les articles ayant pour art_id l'id fourni en param de la fonction
-        $sql = "select com_id, com_content, com_author from t_comment where art_id=? order by com_id";
+        $sql = "select com_id, com_content, com_author from t_comment where art_id=? and parent_com_id=0 order by com_id";
         $query_result = $this->getDb()->fetchAll($sql, array($articleId));
 
+        // itère sur les rangées de la table t_comment et
+        // construit $comments, un array d'objet Comment avec propriété $relatedComments à NULL
         $comments = array();
         foreach ($query_result as $row) {
             $comId = $row['com_id'];
@@ -37,6 +39,17 @@ class CommentDAO extends DAO
             // The associated article is defined for the constructed comment
             $comment->setArticle($article);
             $comments[$comId] = $comment;
+        }
+        // itère sur l'array d'objet Comment pour
+        foreach ($comments as $firstDegreeComment){
+            $parent_com_id = $firstDegreeComment->getId();
+            $responseComments = $this->findSubComments($parent_com_id);
+            foreach ($responseComments as $secondDegreeComment) {
+                $parent_com_id = $secondDegreeComment->getId();
+                $thirdDegreeComments = $this->findSubComments($parent_com_id);
+                $secondDegreeComment->setResponseComments($thirdDegreeComments);
+            }
+            $firstDegreeComment->setResponseComments($responseComments);
         }
         return $comments;
     }
@@ -61,5 +74,19 @@ class CommentDAO extends DAO
             $comment->setArticle($article);
         }
         return $comment;
+    }
+
+    public function findSubComments($parent_com_id) {
+        // sélectionne tous les commentaires ayant pour parent_com_id le param : $parent_com_id
+        $sql = "SELECT com_id, com_content, com_author, parent_com_id FROM t_comment where parent_com_id=? ORDER BY com_id";
+        $query_result = $this->getDb()->fetchAll($sql, array($parent_com_id));
+
+        $comments = array();
+        foreach ($query_result as $row) {
+            $comId = $row['com_id'];
+            $comment = $this->buildEntityObject($row);
+            $comments[$comId] = $comment;
+        }
+        return $comments;
     }
 }

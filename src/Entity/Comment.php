@@ -39,6 +39,15 @@ class Comment
      */
     private $article;
 
+    /**
+     * Associated comments
+     *
+     * @var array
+     */
+    private $responseComments;
+
+    private $parentCommentId;
+
     public function getId() {
         return $this->id;
     }
@@ -73,5 +82,36 @@ class Comment
     public function setArticle(Article $article) {
         $this->article = $article;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getResponseComments()
+    {
+        return $this->responseComments;
+    }
+
+
+    public function setResponseComments($responseComments)
+    {
+        $this->responseComments = $responseComments;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParentCommentId()
+    {
+        return $this->parentCommentId;
+    }
+
+    /**
+     * @param mixed $parentCommentId
+     */
+    public function setParentCommentId($parentCommentId)
+    {
+        $this->parentCommentId = $parentCommentId;
     }
 }
