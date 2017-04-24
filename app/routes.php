@@ -7,6 +7,7 @@
  */
 
 use \Symfony\Component\HttpFoundation\Request;
+use Alaska\Form\Type\CommentType;
 
 $app->get('/', function() use($app) {
     $articles = $app['dao.article']->findAll();
@@ -14,10 +15,20 @@ $app->get('/', function() use($app) {
 
 })->bind('home');
 
-$app->get('/article/{id}', function($id) use ($app) {
+$app->match('/article/{id}', function($id, Request $request) use ($app) {
     $article = $app['dao.article']->find($id);
+    $commentFormView = null;
+    $comment = new \Alaska\Entity\Comment();
+    $comment->setArticle($article);
+    $commentForm = $app['form.factory']->create(CommentType::class, $comment);
+    $commentForm->handleRequest($request);
+    if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+        $app['dao.comment']->save($comment);
+        $app['session']->getFlashBag()->add('success', 'your comment was successfully added');
+    }
+    $commentFormView = $commentForm->createView();
     $comments = $app['dao.comment']->findAllByArticle($id);
-    return $app['twig']->render('article.html.twig', array('article' => $article, 'comments' => $comments));
+    return $app['twig']->render('article.html.twig', array('article' => $article, 'comments' => $comments, 'commentForm' => $commentFormView));
 })->bind('article');
 
 //login form

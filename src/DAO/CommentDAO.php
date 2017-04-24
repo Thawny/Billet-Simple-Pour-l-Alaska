@@ -89,4 +89,22 @@ class CommentDAO extends DAO
         }
         return $comments;
     }
+
+
+    // Enregistre un commentaire en base de données
+    /**
+     * @param Comment $comment
+     */
+    public function save(Comment $comment) {
+        $commentData = array(
+            'art_id' => $comment->getArticle()->getId(),
+            'com_content' => $comment->getContent(),
+            'com_author' => $comment->getAuthor()
+
+        );
+        $this->getDb()->insert('t_comment', $commentData);
+
+        $id = $this->getDb()->lastInsertId();
+        $comment->setId($id);
+    }
 }
