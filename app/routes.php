@@ -11,7 +11,15 @@ use Alaska\Form\Type\CommentType;
 
 $app->get('/', function() use($app) {
     $articles = $app['dao.article']->findAll();
-    return $app['twig']->render('index.html.twig', array('articles' => $articles));
+
+    foreach ($articles as $article) {
+        $string = $article->getContent();
+        $short_string = substr($string, 0, 780);
+        $short_string = $short_string . "...";
+        $article->setContent($short_string);
+    }
+
+    return $app['twig']->render('home.html.twig', array('articles' => $articles));
 
 })->bind('home');
 

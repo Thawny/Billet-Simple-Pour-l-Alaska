@@ -1,13 +1,158 @@
-.articleTitle:hover, .articleTitle:focus {
-    text-decoration: none;
-}
+/*COLOR SCHEME VARIABLES*/
+/*
+#005D98    -   blue
+#585858    -   dark gray (fonts)
+#FCEFE9    -   salmon
+#F2F5F5    -   light gray (background)
+#D6E5E3    -   metal (articles)
+#CCCCCC    -   gray (articles border)
 
+*/
+/*END COLOR SCHEME VARIABLES*/
+
+
+/*MAIN - contains any style that affects the whole page*/
+.container-fluid {
+    padding: 0;
+}
 body {
-    padding-top: 50px;
+    color: #585858;
+    font-family: 'Lato', sans-serif;
+}
+.articles-container {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+/*END MAIN*/
+
+/*LANDING VIEW : BLUE MOUNTAINS*/
+.blue-mountains {
+    background-image: url('../images/blue-wellcome.jpg');
+    background-size: cover;
+    height: 100vh;
+    border: 1px solid #005D98;
+}
+h1 {
+    /*font-family: 'Pacifico', cursive;*/
+    font-family: 'Satisfy', cursive;
+    color: white;
+    font-size: 45px;
+    margin-top: 38vh;
+}
+h1 span {
+    font-size: 35px;
+}
+.quote-left {
+    height: 20px;
+    width: 20px;
+    vertical-align: super;
+}
+.quote-right {
+    height: 20px;
+    width: 20px;
+    vertical-align: sub;
+}
+/*END LANDING VIEW : BLUE MOUNTAINS*/
+
+/*INTRO*/
+.intro {
+    height: 350px;
+    border-left: 20px solid #005D98;
+    padding-top: 75px;
+    border-top: 1px solid #005D98;
+
+    border-bottom : 1px solid black;
+}
+.intro-texte {
+    font-weight: bold;
+    font-size: 20px;
+    color: #005D98;
+
+}
+/*END INTRO*/
+
+/*ARTICLE CONTAINER*/
+.articles-container {
+    background-color: #F2F5F5;
+    margin-top: -10px;
+    padding: 90px;
 }
 
-.footer {
-    border-top: 1px solid #ccc;
-    padding-top: 10px;
-    text-align: center;
+/*FIN ARTICLE CONTAINER*/
+
+
+/*ARTICLE INDIVIDUEL*/
+.article {
+    margin-bottom: 90px;
+
+    border: 1px solid #CCCCCC;
 }
+.article-image {
+
+}
+.article-corps {
+    height: 300px;
+    padding: 0px;
+}
+.article-corps-header {
+    height: 50px;
+    border-bottom: 1px solid #CCCCCC;
+    font-size: 20px;
+}
+.numero-chapitre {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    padding-top: 10px;
+    margin-right: 10px;
+    background-color: #005D98;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+}
+.titre-chapitre {
+    display: inline-block;
+    font-weight: bold;
+}
+.article-titre {
+    position: absolute;
+    margin-top: 10px;
+}
+.slash {
+    margin-left: 10px;
+    margin-right: 5px;
+}
+.article-corps p {
+    font-size: 15px;
+    padding: 20px;
+}
+/*FIN ARTICLE INDIVUDEL*/
+
+
+/*IMAGES ARTICLES*/
+#image1 {
+    background-image: url('../images/image1.jpg');
+    background-size: cover;
+    height: 300px;
+
+}
+#image2 {
+    background-image: url('../images/image2-2.jpg');
+    background-size: cover;
+    height: 300px;
+}
+#image3 {
+    background-image: url('../images/image3.jpg');
+    background-size: cover;
+    height: 300px;
+}
+#article1 {
+    background-color: white;
+}
+#article2 {
+    background-color: #FCEFE9;
+}
+#article3 {
+    background-color: #D6E5E3;
+}
+/*FIN IMAGES ARTICLES*/
