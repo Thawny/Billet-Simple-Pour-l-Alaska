@@ -1,0 +1,89 @@
+{% extends 'layout.html.twig' %}
+{% set adminMenu = true %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+
+    <h2 class="text-center">{{ block('title') }}</h2>
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    <div class="well">
+        {{ form_start(articleForm, { 'attr': {'class': 'form-horizontal'} }) }}
+        <div class="form-group">
+            {{ form_label(articleForm.title, null, { 'label_attr':  {
+                'class': 'col-sm-2 control-label'
+            }}) }}
+            <div class="col-sm-8">
+                {{ form_errors(articleForm.title) }}
+                {{ form_widget(articleForm.title, { 'attr':  {
+                    'class': 'form-control'
+                }}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form_label(articleForm.content, null, { 'label_attr':  {
+                'class': 'col-sm-2 control-label'
+            }}) }}
+            <div class="col-sm-8">
+                {{ form_errors(articleForm.content) }}
+                {{ form_widget(articleForm.content, { 'attr':  {
+                    'class': 'form-control',
+                    'rows': '8'
+                }}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-3">
+                <input type="submit" class="btn btn-primary" value="Enregistrer" />
+            </div>
+        </div>
+        {{ form_end(articleForm) }}
+    </div>
+
+
+    <script src="{{ asset('/lib/tinymce/jquery.tinymce.min.js') }}"></script>
+    <script src="{{ asset('/lib/tinymce/tinymce.min.js') }}"></script>
+
+    <script>
+        tinymce.init({
+            selector : 'textarea',
+            entity_encoding : "raw",
+            encoding: "UTF-8",
+            language: "fr_FR",
+            indentation: "30pt",
+            style_formats: [
+                {title: 'Headers', items: [
+                    {title: 'Header 1', format: 'h3'},
+                    {title: 'Header 2', format: 'h3'},
+                    {title: 'Header 3', format: 'h3'},
+                    {title: 'Header 4', format: 'h4'},
+                    {title: 'Header 5', format: 'h5'},
+                    {title: 'Header 6', format: 'h6'}]
+                }],
+
+        });
+    </script>
+
+    <script>
+        $(function(){
+            var field = $("[name='article[content]']");
+            var tinymce = $("#tinymce");
+            field.removeAttr('required');
+
+
+            });
+
+
+
+
+    </script>
+
+
+
+{% endblock %}

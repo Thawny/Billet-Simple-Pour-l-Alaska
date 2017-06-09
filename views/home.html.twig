@@ -14,6 +14,12 @@
 </head>
 <body>
 
+
+
+{% if app.user and is_granted('ROLE_ADMIN') %}
+    <div class="{% if adminMenu is defined %}active{% endif %}"><a href="{{ path('admin') }}"><span class="glyphicon glyphicon-cog"></span> Administration</a></div>
+{% endif %}
+
 <div class="container-fluid">
     <div class="blue-mountains">
         <h1 class="text-center">Aller simple pour l'Alaska<br /><br /><span>par Jean Larouche</span></h1>
@@ -118,9 +124,14 @@
                             <span class="numero-chapitre text-center">3</span><span class="article-titre"><span class="titre-chapitre">Chapitre {{ article.id }}<span class="slash">/</span>  </span><a href="{{ path('article', { 'id': article.id }) }}">{{ article.title }}</a></span>
                         </div>
                         <div class="article-corps-corps">
-                            <p>
-                                {{ article.content }}
-                            </p>
+
+
+                                {% autoescape false %}
+
+                                {{ article.content |truncate(780) }}
+
+                                {% endautoescape %}
+
                         </div>
                     </div>
                 </div>
@@ -148,6 +159,8 @@
 
 <script   src="{{ asset('/lib/jquery/jquery-3.2.1.min.js') }}"></script>
 <script src="{{ asset('/lib/bootstrap/js/bootstrap.js') }}"></script>
+
+
 
 <script>
 

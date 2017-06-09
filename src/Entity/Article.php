@@ -7,7 +7,11 @@
  * Time: 15:15
  */
 
+
 namespace Alaska\Entity;
+
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Article
 {
@@ -57,6 +61,13 @@ class Article
     public function setContent($content) {
         $this->content = $content;
         return $this;
+    }
+
+
+    static public function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('title', new Assert\Length(array('min' => 10)));
+
     }
 
 }

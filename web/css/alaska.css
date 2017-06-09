@@ -94,6 +94,9 @@ h1 span {
     height: 300px;
     padding: 0px;
 }
+.article-corps-corps {
+    padding: 20px;
+}
 .article-corps-header {
     height: 50px;
     border-bottom: 1px solid #CCCCCC;
@@ -124,7 +127,7 @@ h1 span {
 }
 .article-corps p {
     font-size: 15px;
-    padding: 20px;
+
 }
 /*FIN ARTICLE INDIVUDEL*/
 

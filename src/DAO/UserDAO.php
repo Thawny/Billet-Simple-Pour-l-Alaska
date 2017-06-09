@@ -44,7 +44,7 @@ class UserDAO extends DAO implements UserProviderInterface
         $row = $this->getDb()->fetchAssoc($sql, array($username));
 
         if ($row)
-            return $this->buildDomainObject($row);
+            return $this->buildEntityObject($row);
         else
             throw new UsernameNotFoundException(sprintf('User "%s" not found.', $username));
     }
@@ -66,7 +66,7 @@ class UserDAO extends DAO implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return 'MicroCMS\Domain\User' === $class;
+        return 'Alaska\Entity\User' === $class;
     }
 
     /**
@@ -83,5 +83,24 @@ class UserDAO extends DAO implements UserProviderInterface
         $user->setSalt($row['usr_salt']);
         $user->setRole($row['usr_role']);
         return $user;
+    }
+
+
+    /**
+     * Returns a list of all users, sorted by role and name.
+     *
+     * @return array A list of all users.
+     */
+    public function findAll() {
+        $sql = "select * from t_user order by usr_role, usr_name";
+        $result = $this->getDb()->fetchAll($sql);
+
+        // Convert query result to an array of domain objects
+        $entities = array();
+        foreach ($result as $row) {
+            $id = $row['usr_id'];
+            $entities[$id] = $this->buildEntityObject($row);
+        }
+        return $entities;
     }
 }

@@ -3,21 +3,26 @@
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block content %}
+
+    {% autoescape false %}
+
+
     <p>
     <h2>{{ article.title }}</h2>
     <p>{{ article.content }}</p>
+    {% endautoescape %}
     <h3>Comments</h3>
     {% for comment in comments %}
-        <strong>{{ comment.author }}</strong> said : {{ comment.content }}<br>
+        <strong>{{ comment.author }}</strong>  : {{ comment.content }}<br>
         {% for commento in comment.responseComments %}
-            <strong style="margin-left: 10px;">{{ commento.author }}</strong><span> said : {{ commento.content }}</span><br>
+            <strong style="margin-left: 10px;">{{ commento.author }}</strong><span>  : {{ commento.content }}</span><br>
             {% for commenta in commento.responseComments %}
-                <strong style="margin-left: 20px;">{{ commenta.author }}</strong><span> said : {{ commenta.content }}</span><br>
+                <strong style="margin-left: 20px;">{{ commenta.author }}</strong><span>  : {{ commenta.content }}</span><br>
                 {% else %}
                 No tertiary comments
                 {% endfor %}
             {% else %}
-            No additional comments!
+
         {% endfor %}
     {% else %}
         No comments yet.
