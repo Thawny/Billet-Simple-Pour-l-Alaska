@@ -29,6 +29,7 @@ body {
 .blue-mountains {
     background-image: url('../images/blue-wellcome.jpg');
     background-size: cover;
+    background-attachment: fixed;
     height: 100vh;
     border: 1px solid #005D98;
 }
@@ -57,7 +58,7 @@ h1 span {
 /*INTRO*/
 .intro {
     height: 350px;
-    border-left: 20px solid #005D98;
+    /*border-left: 20px solid #005D98;*/
     padding-top: 75px;
     border-top: 1px solid #005D98;
 

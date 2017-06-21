@@ -55,6 +55,24 @@ class CommentDAO extends DAO
     }
 
     /**
+     * Returns a comment matching the supplied id.
+     *
+     * @param integer $id The comment id
+     *
+     * @return \Alaska\Entity\Comment throws an exception if no matching comment is found
+     */
+    public function find($id) {
+        $sql = "select * from t_comment where com_id=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
+
+        if ($row)
+            return $this->buildEntityObject($row);
+        else
+            throw new \Exception("No comment matching id " . $id);
+    }
+
+
+    /**
      * Creates an Comment object based on a DB row.
      *
      * @param array $row The DB row containing Comment data.
@@ -117,17 +135,35 @@ class CommentDAO extends DAO
      * @param Comment $comment
      */
     public function save(Comment $comment) {
+
+        if ( $comment->getParentCommentId() == NULL) {
+            $comment->setParentCommentId(0);
+        }
+
         $commentData = array(
             'art_id' => $comment->getArticle()->getId(),
             'com_content' => $comment->getContent(),
-            'com_author' => $comment->getAuthor()
+            'com_author' => $comment->getAuthor(),
+            'parent_com_id' => $comment->getParentCommentId()
 
         );
+
         $this->getDb()->insert('t_comment', $commentData);
 
         $id = $this->getDb()->lastInsertId();
         $comment->setId($id);
     }
+
+    /**
+     * Removes a comment from the database.
+     *
+     * @param @param integer $id The comment id
+     */
+    public function delete($id) {
+        // Delete the comment
+        $this->getDb()->delete('t_comment', array('com_id' => $id));
+    }
+
 
     /**
      * Removes all comments for an article
