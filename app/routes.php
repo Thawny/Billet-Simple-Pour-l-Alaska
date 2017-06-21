@@ -80,7 +80,7 @@ $app->match('/admin/article/add', function(Request $request) use ($app) {
         $app['session']->getFlashBag()->add('success', 'The article was successfully created.');
     }
     return $app['twig']->render('article_form.html.twig', array(
-        'title' => 'New article',
+        'title' => 'Nouvel Article',
         'articleForm' => $articleForm->createView()));
 })->bind('admin_article_add');
 
