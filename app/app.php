@@ -69,3 +69,7 @@ $app['twig'] = $app->extend('twig', function(Twig_Environment $twig, $app) {
 });
 $app->register(new Silex\Provider\ValidatorServiceProvider());
 
+$app['image_directory'] = function () {
+    return '/web/images';
+};
+

@@ -15,6 +15,17 @@
         /*.partie-1 {border: 1px solid green;}*/
     </style>
 
+    {% set nextId = article.id + 1 %}
+    {% set prevId = article.id - 1 %}
+
+    <ul>
+        <li class="text-center" ><a href="{{ path("home") }}"><img  class="nav-icon" src="{{ asset('/images/back-home.png') }}" alt="back home"></a></li>
+        <li class="text-center"><a href="{{ path("article", {'id': nextId}) }}"><img  class="nav-icon next" src="{{ asset('/images/next.png') }}" alt="back home"></a></li>
+        <li class="text-center"><a href="{{ path("article", {'id': prevId}) }}"><img  class="nav-icon previous" src="{{ asset('/images/previous.png') }}" alt="back home"></a></li>
+    </ul>
+
+
+
     <div class="container">
         <div class="row">
             <section class="illustration"></section>
@@ -34,10 +45,11 @@
                     {% endautoescape %}
 
                 </article>
-                <hr id="comment-hr" />
-                <h3>Exprimez-vous</h3>
+
             </section>
             <section id="comment-section">
+                <hr id="comment-hr" />
+                <h3 class="exprimezVous">Exprimez-vous</h3>
                 <div>
                     <div class="comment">
                         <p class="comment-name">Statique</p>

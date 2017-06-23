@@ -76,6 +76,18 @@ $app->match('/admin/article/add', function(Request $request) use ($app) {
     $articleForm = $app['form.factory']->create(ArticleType::class, $article);
     $articleForm->handleRequest($request);
     if ($articleForm->isSubmitted() && $articleForm->isValid()) {
+
+        $file = $article->getImage();
+
+        $imageName = md5(uniqid()).'.'.$file->guessExtension();
+
+        $file->move(
+            'web/images/uploads',
+            $imageName
+        );
+
+        $article->setImage($imageName);
+
         $app['dao.article']->save($article);
         $app['session']->getFlashBag()->add('success', 'The article was successfully created.');
     }
@@ -83,6 +95,8 @@ $app->match('/admin/article/add', function(Request $request) use ($app) {
         'title' => 'Nouvel Article',
         'articleForm' => $articleForm->createView()));
 })->bind('admin_article_add');
+
+
 
 // Edit an existing article
 $app->match('/admin/article/{id}/edit', function($id, Request $request) use ($app) {
@@ -98,6 +112,8 @@ $app->match('/admin/article/{id}/edit', function($id, Request $request) use ($ap
         'articleForm' => $articleForm->createView()));
 })->bind('admin_article_edit');
 
+
+
 // Remove an article
 $app->get('/admin/article/{id}/delete', function($id, Request $request) use ($app) {
     // Delete all associated comments
@@ -108,6 +124,7 @@ $app->get('/admin/article/{id}/delete', function($id, Request $request) use ($ap
     // Redirect to admin home page
     return $app->redirect($app['url_generator']->generate('admin'));
 })->bind('admin_article_delete');
+
 
 
 // Edit an existing comment
@@ -123,6 +140,8 @@ $app->match('/admin/comment/{id}/edit', function($id, Request $request) use ($ap
         'title' => 'Edit comment',
         'commentForm' => $commentForm->createView()));
 })->bind('admin_comment_edit');
+
+
 
 // Remove a comment
 $app->get('/admin/comment/{id}/delete', function($id, Request $request) use ($app) {

@@ -54,8 +54,12 @@ h3 {
     color: #005D98;
     margin-top: -10px;
 }
+.exprimezVous {
+    margin-bottom: 40px !important;
+}
 #comment-section {
     margin-bottom: 40px;
+    clear: left;
 }
 .comment {
 
@@ -98,7 +102,43 @@ h3 {
 }
 
 
+ul {
+    position: fixed;
+    right: 0;
+    margin-top: 4vh;
+}
+.nav-icon {
+    height: 90%;
+    width: 80%;
+}
+li {
+    background-color: #005D98;
+    width: 50px !important;
+    list-style: none !important;
+    height: 40px;
+    border-radius: 11px 0 0 11px;
+    margin-top: 4px;
+    padding-top: 5%;
 
+}
+
+.next {
+    height: 60%;
+    width: 65%;
+}
+
+li .next {
+    padding-top: 10px;
+}
+
+.previous {
+    height: 60%;
+    width: 65%;
+}
+
+li .previous {
+    padding-top: 10px;
+}
 
 
 

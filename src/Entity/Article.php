@@ -36,6 +36,25 @@ class Article
      */
     private $content;
 
+
+    private $image;
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
     public function getId() {
         return $this->id;
     }

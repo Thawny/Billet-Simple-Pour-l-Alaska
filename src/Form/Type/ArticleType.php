@@ -13,6 +13,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class ArticleType extends AbstractType
 {
@@ -24,7 +26,11 @@ class ArticleType extends AbstractType
             ))
             ->add('content', TextareaType::class, array(
                 'label' => 'Corps de l\'article'
-            ));
+            ))
+            ->add('image',  FileType::class, array(
+                'label' => 'image associée'
+            ))
+        ;
     }
 
     public function getName()
