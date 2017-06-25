@@ -57,6 +57,7 @@ class ArticleDAO extends DAO
         $article->setId($row['art_id']);
         $article->setTitle($row['art_title']);
         $article->setContent($row['art_content']);
+        $article->setImage($row['art_image']);
         return $article;
     }
 
@@ -92,6 +93,7 @@ class ArticleDAO extends DAO
      */
     public function delete($id) {
         // Delete the article
+
         $this->getDb()->delete('t_article', array('art_id' => $id));
     }
 

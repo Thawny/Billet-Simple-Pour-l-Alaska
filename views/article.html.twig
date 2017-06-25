@@ -1,62 +1,189 @@
 {% extends "layout.html.twig" %}
 
-
 {% block title %}{{ article.title }}{% endblock %}
 
+{% block style %}<link href="{{ asset('/css/article.css') }}" rel="stylesheet">{% endblock %}
 
 
 {% block content %}
 
-    {% autoescape false %}
+    <style>
+        /*.container {*/
+            /*border: 1px solid black;*/
+        /*}*/
+        /*.illustration {border: 1px solid red;}*/
+        /*.partie-1 {border: 1px solid green;}*/
+    </style>
+
+    {% set nextId = article.id + 1 %}
+    {% set prevId = article.id - 1 %}
+
+    <ul>
+        <li class="text-center" ><a href="{{ path("home") }}"><img  class="nav-icon" src="{{ asset('/images/back-home.png') }}" alt="back home"></a></li>
+        <li class="text-center"><a href="{{ path("article", {'id': nextId}) }}"><img  class="nav-icon next" src="{{ asset('/images/next.png') }}" alt="back home"></a></li>
+        {% if article.id > 1 %}
+        <li class="text-center"><a href="{{ path("article", {'id': prevId}) }}"><img  class="nav-icon previous" src="{{ asset('/images/previous.png') }}" alt="back home"></a></li>
+        {% endif %}
+    </ul>
 
 
-    <p>
-    <h2>{{ article.title }}</h2>
-    <p>{{ article.content }}</p>
-    {% endautoescape %}
-    <h3>Comments</h3>
-    {% for comment in comments %}
-        <strong>{{ comment.author }}</strong>  : {{ comment.content }}<br>
-        {% for commento in comment.responseComments %}
-            <strong style="margin-left: 10px;">{{ commento.author }}</strong><span>  : {{ commento.content }}</span><br>
-            {% for commenta in commento.responseComments %}
-                <strong style="margin-left: 20px;">{{ commenta.author }}</strong><span>  : {{ commenta.content }}</span><br>
-                {% else %}
-                No tertiary comments
-                {% endfor %}
-            {% else %}
-
-        {% endfor %}
+    {% if article.image == NULL %}
+        {% set image = 'image1.jpg' %}
     {% else %}
-        No comments yet.
-    {% endfor %}
-
-    <h3>Add a comment</h3>
-    {% if commentForm %}
-        {{ form_start(commentForm) }}
-        <div class="form-group">
-            {{ form_errors(commentForm.author) }}
-            {{ form_widget(commentForm.author) }}
-
-            {{ form_errors(commentForm.content) }}
-            {{ form_widget(commentForm.content, { 'attr':  {
-                'rows': '4',
-                'class': 'form-control',
-                'placeholder': 'Enter your comment'
-            }}) }}
-        </div>
-        <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Publish comment" />
-        </div>
-        {{ form_end(commentForm) }}
-        {% for flashMessage in app.session.flashbag.get('success') %}
-            <div class="alert alert-success">
-                {{ flashMessage }}
-            </div>
-        {% endfor %}
-    {% else %}
-        <a href="{{ path('login') }} ">Log in</a> to add comments.
+        {% set image = article.image %}
     {% endif %}
 
-    </p>
+    <div class="container">
+        <div class="row">
+            <section class="illustration" style="background-image: url('{{ asset('/uploads/' ~ image) }}')"></section>
+            <section>
+                <div class="center text-center">
+                    <h1 class="">{{ article.title }}</h1>
+                    <hr/>
+                    <p>Extrait de Aller simple pour l'Alaska<br />par Jean Larouche</p>
+                </div>
+
+                <article>
+
+                    {% autoescape false %}
+
+                    {{ article.content }}
+
+                    {% endautoescape %}
+
+                </article>
+
+            </section>
+            <section id="comment-section">
+                <hr id="comment-hr" />
+                <h3 class="exprimezVous">Exprimez-vous</h3>
+                <div id="comment-container">
+                    <div class="comment">
+                        <p class="comment-name">Statique</p>
+                        <p class="comment-body">tiam nunc subsidiis patrimonii aut amicorum liberalitate sustentant, hos perire patiemur?
+                            aut amicorum liberalitate sustentant, hos perire patiemur? An, si qui frui se etiam nunc subsidiis patrimonii aut amicorum liberalitate sustentant, hos perire patie
+                        </p>
+                        <p class="comment-respond-button"><p class="respond-arrow"><img src="{{ asset('/images/share-option.png') }}"></p><p class="respond-to-name">Répondre à Martine</p></p>
+                    </div>
+                    <div class="comment comment-secondary">
+                        <p class="comment-name">Statique bis</p>
+                        <p class="comment-body">tiam nunc subsidiis patrimonii aut amicorum liberalitate sustentant, hos perire patiemur?
+                            aut amicorum liberalitate sustentant, hos perire patiemur? An, si qui frui se etiam nunc subsidiis patrimonii aut amicorum liberalitate sustentant, hos perire patie
+                        </p>
+                        <p class="comment-respond-button"></p>
+                    </div>
+                    <div class="comment-tertiary">
+                        <p class="comment-name">Statique bis bis</p>
+                        <p class="comment-body">tiam nunc subsidiis patrimonii aut amicorum liberalitate sustentant, hos perire patiemur?
+                            aut amicorum liberalitate sustentant, hos perire patiemur? An, si qui frui se etiam nunc subsidiis patrimonii aut amicorum liberalitate sustentant, hos perire patie
+                        </p>
+                        <p class="comment-respond-button"></p>
+                    </div>
+                    <div class="comment">
+                        <p class="comment-name">Statique </p>
+                        <p class="comment-body">tiam nunc subsidiis patrimonii aut amicorum liberalitate sustentant, hos perire patiemur?
+                            aut amicorum liberalitate sustentant, hos perire patiemur? An, si qui frui se etiam nunc subsidiis patrimonii aut amicorum liberalitate sustentant, hos perire patie
+                        </p>
+                        <p class="comment-respond-button"></p>
+                    </div>
+
+                    {% for comment in comments %}
+
+                        <div class="comment">
+                            <p class="comment-name">{{ comment.author }}</p>
+                                <p class="comment-body">
+                                    {{ comment.content }}
+                                </p>
+                            <p class="comment-respond-button"><p class="respond-arrow"><img src="{{ asset('/images/share-option.png') }}"></p><p class="respond-to-name" data-commentId="{{ comment.id }}" >Répondre à {{ comment.author }}</p></p>
+                        </div>
+
+
+                        {% for commentSec in comment.responseComments %}
+                                <div class="comment comment-secondary">
+                                    <p class="comment-name">{{ commentSec.author }}</p>
+                                    <p class="comment-body">
+                                        {{ comment.content }}
+                                    </p>
+                                    <p class="comment-respond-button"><p class="respond-arrow"><img src="{{ asset('/images/share-option.png') }}"></p><p class="respond-to-name" data-commentId="{{ commentSec.id }}"  >Répondre à {{ commentSec.author }}</p></p>
+                                </div>
+
+                                    {% for commentTer in commentSec.responseComments %}
+                                    <div class="comment comment-tertiary">
+                                        <p class="comment-name">{{ commentTer.author }}</p>
+                                        <p class="comment-body">
+                                            {{ comment.content }}
+                                        </p>
+                                        {#<p class="comment-respond-button"><p class="respond-arrow"><img src="{{ asset('/images/share-option.png') }}"></p><p class="respond-to-name" data-commentId="{{ commentTer.id }}"  >Répondre à {{ commentTer.author }}</p></p>#}
+                                    </div>
+                                    {% endfor %}
+
+
+                            {% endfor %}
+
+                    {% endfor %}
+
+                </div>
+            </section>
+
+        </div>
+
+
+
+
+        {% if commentForm %}
+            <div class="form-block">
+                    {{ form_start(commentForm) }}
+                    <div class="form-group">
+                        {{ form_errors(commentForm.author) }}
+                        {{ form_widget(commentForm.author, {'attr': {
+                            'placeholder': 'Entrez votre nom',
+                            'class': 'form-control'
+                        }}) }}
+
+                        {{ form_errors(commentForm.content) }}
+                        {{ form_widget(commentForm.content, { 'attr':  {
+                            'rows': '4',
+                            'class': 'form-control',
+                            'placeholder': 'Entrez votre commentaire'
+                        }}) }}
+
+                        {{ form_errors(commentForm.parentCommentId) }}
+                        {{ form_widget(commentForm.parentCommentId, { 'attr': {
+                            'class' : 'hidden'
+                        }
+
+                        }) }}
+
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Publier" />
+                    </div>
+                    {{ form_end(commentForm) }}
+                    {% for flashMessage in app.session.flashbag.get('success') %}
+                        <div class="alert alert-success">
+                            {{ flashMessage }}
+                        </div>
+                    {% endfor %}
+                    {% else %}
+                    <a href="{{ path('login') }} ">Log in</a> to add comments.
+            </div>
+         {% endif %}
+
+
+    </div>
+
+
+
 {% endblock %}
+{% block scripts %}
+    <script src="{{ asset('/lib/javascript/generateForm.js') }}"></script>
+    <script src="{{ asset('/lib/javascript/size.js') }}"></script>
+
+{% endblock %}
+
+
+
+
+
+
+

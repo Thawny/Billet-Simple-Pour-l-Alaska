@@ -85,6 +85,7 @@
                         </tr>
                         </thead>
                         {% for comment in comments %}
+
                             <tr>
                                 <td><a class="articleTitle" href="{{ path('article', { 'id': comment.article.id }) }}">{{ comment.article.title }}</a></td>
                                 <td>{{ comment.author }}</td>
@@ -111,7 +112,88 @@
                                         </div><!-- /.modal-dialog -->
                                     </div><!-- /.modal -->
                                 </td>
+
+
+
                             </tr>
+
+
+                            {% for commentSec in comment.responseComments %}
+
+
+                                <tr>
+                                    <td style="padding-left: 30px"><a class="articleTitle" href="{{ path('article', { 'id': comment.article.id }) }}">{{ comment.article.title }}</a></td>
+                                    <td>{{ commentSec.author }}</td>
+                                    <td>{{ commentSec.content | truncate(60) }}</td>
+                                    <td>
+                                        <a href="{{ path('admin_comment_edit', { 'id': commentSec.id }) }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                        <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#commentDialog{{ commentSec.id }}"><span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                        <div class="modal fade" id="commentDialog{{ commentSec.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title" id="myModalLabel">Confirmation needed</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Do you really want to delete this comment ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                        <a href="{{ path('admin_comment_delete', { 'id': commentSec.id }) }}" class="btn btn-danger">Confirm</a>
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div><!-- /.modal -->
+                                    </td>
+
+
+
+                                </tr>
+
+
+                                {% for commentTer in commentSec.responseComments %}
+
+                                    <tr>
+                                        <td style="padding-left: 60px"><a class="articleTitle" href="{{ path('article', { 'id': comment.article.id }) }}">{{ comment.article.title }}</a></td>
+                                        <td>{{ commentTer.author }}</td>
+                                        <td>{{ commentTer.content | truncate(60) }}</td>
+                                        <td>
+                                            <a href="{{ path('admin_comment_edit', { 'id': commentTer.id }) }}" class="btn btn-info btn-xs" title="Edit"><span class="glyphicon glyphicon-edit"></span></a>
+                                            <button type="button" class="btn btn-danger btn-xs" title="Delete" data-toggle="modal" data-target="#commentDialog{{ commentTer.id }}"><span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                            <div class="modal fade" id="commentDialog{{ commentTer.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                            <h4 class="modal-title" id="myModalLabel">Confirmation needed</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Do you really want to delete this comment ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                            <a href="{{ path('admin_comment_delete', { 'id': commentTer.id }) }}" class="btn btn-danger">Confirm</a>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
+                                        </td>
+
+
+
+                                    </tr>
+
+
+
+                                {% endfor %}
+
+
+
+                            {% endfor %}
+
                         {% endfor %}
                     </table>
                 </div>

@@ -38,7 +38,7 @@ $app->match('/article/{id}', function($id, Request $request) use ($app) {
     }
     $commentFormView = $commentForm->createView();
     $comments = $app['dao.comment']->findAllByArticle($id);
-    return $app['twig']->render('articlebis.html.twig', array('article' => $article, 'comments' => $comments, 'commentForm' => $commentFormView));
+    return $app['twig']->render('article.html.twig', array('article' => $article, 'comments' => $comments, 'commentForm' => $commentFormView));
 })->bind('article');
 
 //login form
@@ -77,16 +77,19 @@ $app->match('/admin/article/add', function(Request $request) use ($app) {
     $articleForm->handleRequest($request);
     if ($articleForm->isSubmitted() && $articleForm->isValid()) {
 
+        if ($article->getImage()) {
         $file = $article->getImage();
 
         $imageName = md5(uniqid()).'.'.$file->guessExtension();
 
         $file->move(
-            'web/images/uploads',
+            'uploads',
             $imageName
         );
 
         $article->setImage($imageName);
+
+        }
 
         $app['dao.article']->save($article);
         $app['session']->getFlashBag()->add('success', 'The article was successfully created.');

@@ -161,6 +161,12 @@ hr {
     background-size: cover;
     height: 300px;
 }
+
+#image {
+    background-size: cover;
+    height: 300px;
+}
+
 #article1 {
     background-color: white;
 }
@@ -171,3 +177,47 @@ hr {
     background-color: #D6E5E3;
 }
 /*FIN IMAGES ARTICLES*/
+
+
+
+
+/*SMALL SMALL SMALL SMALL*/
+@media (max-width: 650px) {
+    .articles-container {
+        padding: 50px;
+    }
+}
+
+@media (max-width: 600px) {
+    .articles-container {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 500px) {
+    .articles-container {
+        padding: 5px;
+    }
+    .article-corps {
+        height: 370px;
+    }
+
+    .intro-texte {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 400px) {
+    .article-corps {
+        height: 420px;
+    }
+    .article {
+        margin-bottom: 50px;
+    }
+}
+
+@media (max-width: 350px) {
+    .article-corps {
+        height: 460px;
+    }
+}

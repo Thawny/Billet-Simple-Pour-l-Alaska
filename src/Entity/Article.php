@@ -12,6 +12,8 @@ namespace Alaska\Entity;
 
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\ImageValidator;
+
 
 class Article
 {
@@ -36,7 +38,10 @@ class Article
      */
     private $content;
 
-
+    /**
+     * @var
+     *  @Assert\File(mimeTypes={ "image/jpeg" })
+     */
     private $image;
 
     /**
@@ -85,7 +90,7 @@ class Article
 
     static public function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addPropertyConstraint('title', new Assert\Length(array('min' => 10)));
+        $metadata->addPropertyConstraint('title', new Assert\Length(array('min' => 1)));
 
     }
 

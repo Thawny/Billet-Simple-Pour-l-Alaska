@@ -113,19 +113,30 @@ class CommentDAO extends DAO
     /**
      * Returns a list of all comments, sorted by date (most recent first).
      *
-     * @return array A list of all comments.
+     * @return array A list of all comments.p
      */
     public function findAll() {
-        $sql = "select * from t_comment order by com_id desc";
+        $sql = "select * from t_comment where parent_com_id=0 order by com_id desc";
         $result = $this->getDb()->fetchAll($sql);
 
-        // Convert query result to an array of domain objects
-        $entities = array();
+        $comments = array();
         foreach ($result as $row) {
-            $id = $row['com_id'];
-            $entities[$id] = $this->buildEntityObject($row);
+            $comId = $row['com_id'];
+            $comment = $this->buildEntityObject($row);
+            $comments[$comId] = $comment;
         }
-        return $entities;
+        // itère sur l'array d'objet Comment pour
+        foreach ($comments as $firstDegreeComment){
+            $parent_com_id = $firstDegreeComment->getId();
+            $responseComments = $this->findSubComments($parent_com_id);
+            foreach ($responseComments as $secondDegreeComment) {
+                $parent_com_id = $secondDegreeComment->getId();
+                $thirdDegreeComments = $this->findSubComments($parent_com_id);
+                $secondDegreeComment->setResponseComments($thirdDegreeComments);
+            }
+            $firstDegreeComment->setResponseComments($responseComments);
+        }
+        return $comments;
     }
 
 
@@ -160,8 +171,21 @@ class CommentDAO extends DAO
      * @param @param integer $id The comment id
      */
     public function delete($id) {
-        // Delete the comment
+
+        // sélectionne tous les commentaires ayant pour parent_com_id le param $id
+        $sql = "SELECT com_id FROM t_comment where parent_com_id=? ORDER BY com_id";
+        $row = $this->getDb()->fetchAll($sql, array($id));
+        foreach ($row as $entry) {
+            $com_id = $entry['com_id'];
+            $this->getDb()->delete('t_comment', array('parent_com_id' => $com_id));
+
+        }
+        // Delete all first and second level comments
         $this->getDb()->delete('t_comment', array('com_id' => $id));
+        $this->getDb()->delete('t_comment', array('parent_com_id' => $id));
+
+
+
     }
 
 
