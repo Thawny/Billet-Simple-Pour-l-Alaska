@@ -141,6 +141,21 @@ hr {
     font-size: 15px;
 
 }
+.article-corps-corps {
+    font-size: 16px;
+}
+#poursuivre-la-lecture {
+    color: #005D98;
+    /*font-weight: bold;*/
+}
+#poursuivre-la-lecture:hover {
+    /*font-style: italic;*/
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none;
+
+}
 /*FIN ARTICLE INDIVUDEL*/
 
 

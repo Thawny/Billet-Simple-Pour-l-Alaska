@@ -121,6 +121,10 @@ $app->match('/admin/article/{id}/edit', function($id, Request $request) use ($ap
 $app->get('/admin/article/{id}/delete', function($id, Request $request) use ($app) {
     // Delete all associated comments
     $app['dao.comment']->deleteAllByArticle($id);
+
+//    $app['dao.article']->
+
+
     // Delete the article
     $app['dao.article']->delete($id);
     $app['session']->getFlashBag()->add('success', 'L\'article a été supprimé avec succès.');

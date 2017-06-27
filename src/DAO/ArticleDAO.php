@@ -98,4 +98,11 @@ class ArticleDAO extends DAO
     }
 
 
+    public function getArticleImageById($id) {
+        $sql = "select art_image from t_article where art_id=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
+
+    }
+
+
 }

@@ -1,3 +1,4 @@
 vendor
 lib
 web/uploads
+composer.phar
