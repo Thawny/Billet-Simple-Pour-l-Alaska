@@ -48,6 +48,7 @@ class Comment
 
     private $parentCommentId;
 
+
     public function getId() {
         return $this->id;
     }

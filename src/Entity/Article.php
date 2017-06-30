@@ -44,6 +44,24 @@ class Article
      */
     private $image;
 
+    private $chapitre;
+
+    /**
+     * @return mixed
+     */
+    public function getChapitre()
+    {
+        return $this->chapitre;
+    }
+
+    /**
+     * @param mixed $chapitre
+     */
+    public function setChapitre($chapitre)
+    {
+        $this->chapitre = $chapitre;
+    }
+
     /**
      * @return mixed
      */

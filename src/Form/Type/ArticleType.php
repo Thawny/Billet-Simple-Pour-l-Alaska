@@ -10,10 +10,12 @@ namespace Alaska\Form\Type;
 
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -32,7 +34,10 @@ class ArticleType extends AbstractType
             ->add('image',  FileType::class, array(
                 'label' => 'image associée',
                 'required' => false,
-                'constraints' => new Assert\File(array('mimeTypes' => array('image/jpg', 'image/jpeg')))
+                'constraints' => new Assert\File(array('mimeTypes' => array('image/jpg', 'image/jpeg', 'image/png')))
+            ))
+            ->add('chapitre', IntegerType::class, array(
+                'label' => 'Numéro de chapitre'
             ))
         ;
     }

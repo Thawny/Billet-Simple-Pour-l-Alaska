@@ -2,6 +2,7 @@
 {% set adminMenu = true %}
 
 {% block title %}Administration{% endblock %}
+{% block style %}<link href="{{ asset('/css/admin.css') }}" rel="stylesheet">{% endblock %}
 
 {% block content %}
     <style>.adminTable {
@@ -208,4 +209,11 @@
 
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ asset('/lib/javascript/size.js') }}"></script>
+    <script src="{{ asset('/lib/javascript/fadeoutsuccess.js') }}"></script>
+
+
 {% endblock %}

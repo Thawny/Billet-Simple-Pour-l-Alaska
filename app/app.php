@@ -48,6 +48,8 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 ));
 
 
+
+
 // reqister service
 $app['dao.article'] = function ($app) {
     return new Alaska\DAO\ArticleDAO($app['db']);

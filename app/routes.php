@@ -93,6 +93,9 @@ $app->match('/admin/article/add', function(Request $request) use ($app) {
 
         $app['dao.article']->save($article);
         $app['session']->getFlashBag()->add('success', 'The article was successfully created.');
+
+        return $app->redirect($app['url_generator']->generate('admin'));
+
     }
     return $app['twig']->render('article_form.html.twig', array(
         'title' => 'Nouvel Article',

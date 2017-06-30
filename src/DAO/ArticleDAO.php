@@ -58,6 +58,7 @@ class ArticleDAO extends DAO
         $article->setTitle($row['art_title']);
         $article->setContent($row['art_content']);
         $article->setImage($row['art_image']);
+        $article->setChapitre($row['art_chapitre']);
         return $article;
     }
 
@@ -71,7 +72,8 @@ class ArticleDAO extends DAO
         $articleData = array(
             'art_title' => $article->getTitle(),
             'art_content' => $article->getContent(),
-            'art_image' => $article->getImage()
+            'art_image' => $article->getImage(),
+            'art_chapitre' => $article->getChapitre()
         );
 
         if ($article->getId()) {
