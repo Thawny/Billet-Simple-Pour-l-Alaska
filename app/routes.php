@@ -11,6 +11,8 @@ use Alaska\Entity\Article;
 use Alaska\Entity\Comment;
 use Alaska\Form\Type\ArticleType;
 use Alaska\Form\Type\CommentType;
+use Alaska\Entity\User;
+use Alaska\Form\Type\UserType;
 
 $app->get('/', function() use($app) {
     $articles = $app['dao.article']->findAll();
@@ -160,3 +162,58 @@ $app->get('/admin/comment/{id}/delete', function($id, Request $request) use ($ap
     // Redirect to admin home page
     return $app->redirect($app['url_generator']->generate('admin'));
 })->bind('admin_comment_delete');
+
+
+
+
+// Add a user
+$app->match('/admin/user/add', function(Request $request) use ($app) {
+    $user = new User();
+    $userForm = $app['form.factory']->create(UserType::class, $user);
+    $userForm->handleRequest($request);
+    if ($userForm->isSubmitted() && $userForm->isValid()) {
+        // generate a random salt value
+        $salt = substr(md5(time()), 0, 23);
+        $user->setSalt($salt);
+        $plainPassword = $user->getPassword();
+        // find the default encoder
+        $encoder = $app['security.encoder.bcrypt'];
+        // compute the encoded password
+        $password = $encoder->encodePassword($plainPassword, $user->getSalt());
+        $user->setPassword($password);
+        $app['dao.user']->save($user);
+        $app['session']->getFlashBag()->add('success', 'The user was successfully created.');
+    }
+    return $app['twig']->render('user_form.html.twig', array(
+        'title' => 'New user',
+        'userForm' => $userForm->createView()));
+})->bind('admin_user_add');
+
+// Edit an existing user
+$app->match('/admin/user/{id}/edit', function($id, Request $request) use ($app) {
+    $user = $app['dao.user']->find($id);
+    $userForm = $app['form.factory']->create(UserType::class, $user);
+    $userForm->handleRequest($request);
+    if ($userForm->isSubmitted() && $userForm->isValid()) {
+        $plainPassword = $user->getPassword();
+        // find the encoder for the user
+        $encoder = $app['security.encoder_factory']->getEncoder($user);
+        // compute the encoded password
+        $password = $encoder->encodePassword($plainPassword, $user->getSalt());
+        $user->setPassword($password);
+        $app['dao.user']->save($user);
+        $app['session']->getFlashBag()->add('success', 'The user was successfully updated.');
+    }
+    return $app['twig']->render('user_form.html.twig', array(
+        'title' => 'Edit user',
+        'userForm' => $userForm->createView()));
+})->bind('admin_user_edit');
+
+// Remove a user
+$app->get('/admin/user/{id}/delete', function($id, Request $request) use ($app) {
+    // Delete the user
+    $app['dao.user']->delete($id);
+    $app['session']->getFlashBag()->add('success', 'The user was successfully removed.');
+    // Redirect to admin home page
+    return $app->redirect($app['url_generator']->generate('admin'));
+})->bind('admin_user_delete');
