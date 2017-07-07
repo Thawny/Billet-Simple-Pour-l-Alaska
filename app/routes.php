@@ -124,6 +124,15 @@ $app->match('/admin/article/{id}/edit', function($id, Request $request) use ($ap
 
 // Remove an article
 $app->get('/admin/article/{id}/delete', function($id, Request $request) use ($app) {
+
+    /** @var Article  $article */
+    $article = $app['dao.article']->find($id);
+    if ($article->getImage() !== NULL)
+    {
+        $app['upload_deleter']->deleteFileByName($article->getImage());
+    }
+
+
     // Delete all associated comments
     $app['dao.comment']->deleteAllByArticle($id);
 

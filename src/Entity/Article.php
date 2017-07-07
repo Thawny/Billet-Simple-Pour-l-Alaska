@@ -63,7 +63,7 @@ class Article
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getImage()
     {

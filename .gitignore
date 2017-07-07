@@ -2,4 +2,4 @@ vendor
 lib
 web/uploads
 composer.phar
-.idea/*
+.idea

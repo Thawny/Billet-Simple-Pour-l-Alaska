@@ -34,6 +34,11 @@ class ArticleDAO extends DAO
     }
 
 
+    /**
+     * @param $id
+     * @return Article
+     * @throws \Exception
+     */
     public function find($id) {
         $sql = "select * from t_article where art_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));

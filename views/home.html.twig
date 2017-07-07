@@ -130,12 +130,18 @@
                 {% set image = article.image %}
             {% endif %}
 
+            {% if article.chapitre %}
+                {% set chapitre = article.chapitre %}
+                {% else %}
+                {% set chapitre = article.id %}
+            {% endif %}
+
             <div class="article col-xs-12" id="article3" style="background-color: {{ color }}">
                 <div class="row">
                     <div class="article-image col-sm-4" id="image" style="background-image: url('{{ asset('/uploads/' ~ image) }}')"></div>
                     <div class="article-corps col-sm-8">
                         <div class="article-corps-header">
-                            <span class="numero-chapitre text-center">{{ article.id }}</span><span class="article-titre"><span class="titre-chapitre">Chapitre {{ article.id }}<span class="slash">/</span>  </span><a href="{{ path('article', { 'id': article.id }) }}">{{ article.title }}</a></span>
+                            <span class="numero-chapitre text-center">{{ chapitre }}</span><span class="article-titre"><span class="titre-chapitre">Chapitre {{ chapitre }}<span class="slash">/</span>  </span><a href="{{ path('article', { 'id': article.id }) }}">{{ article.title }}</a></span>
                         </div>
                         <div class="article-corps-corps">
 
