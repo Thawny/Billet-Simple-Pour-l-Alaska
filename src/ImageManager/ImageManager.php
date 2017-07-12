@@ -7,9 +7,9 @@
  * Time: 12:32
  */
 
-namespace Alaska\UploadDeleter;
+namespace Alaska\ImageManager;
 
-class UploadDeleter
+class ImageManager
 {
 
 
@@ -19,6 +19,13 @@ class UploadDeleter
        unlink($file_path);
 
     }
+
+//    public function getImageFileByName($fileName)
+//    {
+//        $file_path =  __DIR__ . '/../../web' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $fileName;
+//        return file_get_contents($file_path);
+//
+//    }
 
 
 }

@@ -8,7 +8,7 @@
 
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
-use Alaska\UploadDeleter\UploadDeleter;
+use Alaska\ImageManager\ImageManager;
 
 // Register global error and exception handlers
 ErrorHandler::register();
@@ -76,6 +76,6 @@ $app['image_directory'] = function () {
     return '/web/images';
 };
 
-$app['upload_deleter'] = function ($app) {
-    return new UploadDeleter();
+$app['image_manager'] = function ($app) {
+    return new ImageManager();
 };
