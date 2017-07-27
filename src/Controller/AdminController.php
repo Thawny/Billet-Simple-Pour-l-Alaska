@@ -8,6 +8,7 @@
 
 namespace Alaska\Controller;
 
+use Alaska\Form\Model\ArticleModel;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Alaska\Entity\Article;
@@ -46,13 +47,18 @@ class AdminController
      * @param Application $app Silex application
      */
     public function addArticleAction(Request $request, Application $app) {
-        $article = new Article();
-        $articleForm = $app['form.factory']->create(ArticleType::class, $article);
+        $articleModel = new ArticleModel();
+        $articleForm = $app['form.factory']->create(ArticleType::class, $articleModel);
         $articleForm->handleRequest($request);
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
 
-            if ($article->getImage()) {
-                $file = $article->getImage();
+            $article = new Article();
+            $article->setChapitre($articleModel->chapitre);
+            $article->setTitle($articleModel->title);
+            $article->setContent($articleModel->content);
+
+            if ($articleModel->imageToUpload) {
+                $file = $articleModel->imageToUpload;
 
                 $imageName = md5(uniqid()).'.'.$file->guessExtension();
 
@@ -61,12 +67,13 @@ class AdminController
                     $imageName
                 );
 
-                $article->setImage($imageName);
+                $article->setImage($articleModel->imageToUpload);
+
 
             }
 
             $app['dao.article']->save($article);
-            $app['session']->getFlashBag()->add('success', 'The article was successfully created.');
+            $app['session']->getFlashBag()->add('success', "L'article a été créé avec succès");
 
             return $app->redirect($app['url_generator']->generate('admin'));
 
@@ -84,12 +91,46 @@ class AdminController
      */
     public function editArticleAction($id, Request $request, Application $app) {
         $article = $app['dao.article']->find($id);
-        $articleForm = $app['form.factory']->create(ArticleType::class, $article);
+        $articleModel = new ArticleModel();
+
+        $articleModel->image = $article->getImage();
+        $articleModel->title = $article->getTitle();
+        $articleModel->content = $article->getContent();
+        $articleModel->chapitre = $article->getChapitre();
+
+
+        $articleForm = $app['form.factory']->create(ArticleType::class, $articleModel);
         $articleForm->handleRequest($request);
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
+
+            $article->setChapitre($articleModel->chapitre);
+            $article->setTitle($articleModel->title);
+            $article->setContent($articleModel->content);
+
+            if ($articleModel->imageToUpload) {
+                $file = $articleModel->imageToUpload;
+
+                $imageName = md5(uniqid()).'.'.$file->guessExtension();
+
+                $file->move(
+                    'uploads',
+                    $imageName
+                );
+
+                $article->setImage($imageName);
+
+
+            }
+
+
             $app['dao.article']->save($article);
-            $app['session']->getFlashBag()->add('success', 'The article was successfully updated.');
+            $app['session']->getFlashBag()->add('success', "L'article a été mis a jour avec succès");
+            return $app->redirect($app['url_generator']->generate('admin'));
+
         }
+
+
+
         return $app['twig']->render('article_form.html.twig', array(
             'title' => 'Edit article',
             'articleForm' => $articleForm->createView()));
@@ -138,7 +179,7 @@ class AdminController
         $commentForm->handleRequest($request);
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $app['dao.comment']->save($comment);
-            $app['session']->getFlashBag()->add('success', 'The comment was successfully updated.');
+            $app['session']->getFlashBag()->add('success', 'Le commentaire a été mis a jour avec succès');
         }
         return $app['twig']->render('comment_form.html.twig', array(
             'title' => 'Edit comment',
@@ -154,7 +195,7 @@ class AdminController
      */
     public function deleteCommentAction($id, Application $app) {
         $app['dao.comment']->delete($id);
-        $app['session']->getFlashBag()->add('success', 'The comment was successfully removed.');
+        $app['session']->getFlashBag()->add('success', "Le commentaire a été supprimé avec succès");
         // Redirect to admin home page
         return $app->redirect($app['url_generator']->generate('admin'));
     }
@@ -181,7 +222,7 @@ class AdminController
             $password = $encoder->encodePassword($plainPassword, $user->getSalt());
             $user->setPassword($password);
             $app['dao.user']->save($user);
-            $app['session']->getFlashBag()->add('success', 'The user was successfully created.');
+            $app['session']->getFlashBag()->add('success', "L'utilisateur a été créé avec succès");
         }
         return $app['twig']->render('user_form.html.twig', array(
             'title' => 'New user',
@@ -207,7 +248,7 @@ class AdminController
             $password = $encoder->encodePassword($plainPassword, $user->getSalt());
             $user->setPassword($password);
             $app['dao.user']->save($user);
-            $app['session']->getFlashBag()->add('success', 'The user was successfully updated.');
+            $app['session']->getFlashBag()->add('success', "L'utilisateur a été édité avec succès");
         }
         return $app['twig']->render('user_form.html.twig', array(
             'title' => 'Edit user',
@@ -224,7 +265,7 @@ class AdminController
     public function deleteUserAction($id, Application $app) {
         // Delete the user
         $app['dao.user']->delete($id);
-        $app['session']->getFlashBag()->add('success', 'The user was successfully removed.');
+        $app['session']->getFlashBag()->add('success', "L'utilisateur a été supprimé avec succès");
         // Redirect to admin home page
         return $app->redirect($app['url_generator']->generate('admin'));
     }

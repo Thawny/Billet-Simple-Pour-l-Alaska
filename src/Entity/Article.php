@@ -40,7 +40,6 @@ class Article
 
     /**
      * @var
-     *  @Assert\File(mimeTypes={ "image/jpeg" })
      */
     private $image;
 
