@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Bootstrap Example</title>
+    <title>Billet simple pour l'Alaskae</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet">
@@ -16,8 +16,6 @@
 
 </head>
 <body>
-
-
 
 {% if app.user and is_granted('ROLE_ADMIN') %}
     <div class="{% if adminMenu is defined %}active{% endif %}"><a href="{{ path('admin') }}"><span class="glyphicon glyphicon-cog"></span> Administration</a></div>
